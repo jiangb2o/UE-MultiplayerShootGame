@@ -22,7 +22,7 @@ protected:
 	virtual void NativeDestruct() override;
 
 	//
-	//¶àÈËÔÚÏß×ÓÏµÍ³µÄ×Ô¶¨ÒåÎ¯ÍĞµÄ»Øµ÷º¯Êı
+	//å¤šäººåœ¨çº¿å­ç³»ç»Ÿçš„è‡ªå®šä¹‰å§”æ‰˜çš„å›è°ƒå‡½æ•°
 	//
 	UFUNCTION()
 	void OnCreateSession(bool bWasSuccessful);
@@ -49,7 +49,7 @@ private:
 
 	void MenuTearDown();
 
-	//ÓÃÀ´´¦ÀíËùÓĞÔÚÏß»á»°¹¦ÄÜµÄ×ÓÏµÍ³
+	//ç”¨æ¥å¤„ç†æ‰€æœ‰åœ¨çº¿ä¼šè¯åŠŸèƒ½çš„å­ç³»ç»Ÿ
 	class UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem;
 
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
