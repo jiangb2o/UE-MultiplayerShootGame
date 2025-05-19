@@ -116,8 +116,24 @@ void ABlasterCharacter::LookUp(float Value)
 
 void ABlasterCharacter::EquipButtonPressed()
 {
-	// 由服务器来决定是否能够装备武器
-	if(Combat && HasAuthority())
+	// 由服务端可以直接装备, 客户端则执行RPC
+	if(Combat)
+	{
+		if(HasAuthority())
+		{
+			Combat->EquipWeapon(OverlappingWeapon);
+		}
+		else
+		{
+			ServerEquipButtonPressed();
+		}
+	}
+}
+
+/* 在服务器执行 RPC 时需要执行什么逻辑 */
+void ABlasterCharacter::ServerEquipButtonPressed_Implementation()
+{
+	if(Combat)
 	{
 		Combat->EquipWeapon(OverlappingWeapon);
 	}

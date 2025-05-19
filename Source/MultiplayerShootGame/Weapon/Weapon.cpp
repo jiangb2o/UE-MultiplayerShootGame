@@ -6,6 +6,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "MultiplayerShootGame/Character/BlasterCharacter.h"
+#include "Net/UnrealNetwork.h"
 
 AWeapon::AWeapon()
 {
@@ -55,6 +56,14 @@ void AWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
+}
+
+void AWeapon::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(AWeapon, WeaponState);
 }
 
 void AWeapon::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -74,6 +83,32 @@ void AWeapon::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActo
 	if (BlasterCharacter)
 	{
 		BlasterCharacter->SetOverlappingWeapon(nullptr);
+	}
+}
+
+void AWeapon::SetWeaponState(EWeaponState State)
+{
+	WeaponState = State;
+	switch (WeaponState)
+	{
+	// 装备后, 隐藏拾取 Widget. 并禁用圆形区域的碰撞
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		AreaSphere->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		break;
+	}
+
+}
+
+/* 客户端处理没有被复制的属性 */
+void AWeapon::OnRep_WeaponState()
+{
+	switch (WeaponState)
+	{
+	// 装备后, 隐藏拾取 Widget. 并禁用圆形区域的碰撞
+	case EWeaponState::EWS_Equipped:
+		ShowPickupWidget(false);
+		break;
 	}
 }
 
